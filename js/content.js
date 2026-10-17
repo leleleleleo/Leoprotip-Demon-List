@@ -3,8 +3,9 @@ import { round, score } from './score.js';
 /**
  * Path to directory containing `_list.json` and all levels
  */
+// Detecta automáticamente si estás en GitHub Pages o en tu PC local
 const isGitHubPages = window.location.hostname.includes('github.io');
-const dir = isGitHubPages ? '/GDListTemplate/data' : './data';
+const dir = isGitHubPages ? '/Leoprotip-Demon-List/data' : './data';
 
 export async function fetchList() {
     const listResult = await fetch(`${dir}/_list.json`);
