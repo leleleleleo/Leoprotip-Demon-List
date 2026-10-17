@@ -13,27 +13,27 @@ export default {
         <main v-else class="page-roulette">
             <div class="sidebar">
                 <p class="type-label-md" style="color: #aaa">
-                    Shameless copy of the Extreme Demon Roulette by <a href="https://matcool.github.io/extreme-demon-roulette/" target="_blank">matcool</a>.
+                    Copia descarada de la Extreme Demon Roulette de <a href="https://matcool.github.io/extreme-demon-roulette/" target="_blank">matcool</a>.
                 </p>
                 <form class="options">
                     <div class="check">
                         <input type="checkbox" id="main" value="Main List" v-model="useMainList">
-                        <label for="main">Main List</label>
+                        <label for="main">Lista principal</label>
                     </div>
                     <div class="check">
                         <input type="checkbox" id="extended" value="Extended List" v-model="useExtendedList">
-                        <label for="extended">Extended List</label>
+                        <label for="extended">Lista extendida</label>
                     </div>
-                    <Btn @click.native.prevent="onStart">{{ levels.length === 0 ? 'Start' : 'Restart'}}</Btn>
+                    <Btn @click.native.prevent="onStart">{{ levels.length === 0 ? 'Comenzar' : 'Reiniciar'}}</Btn>
                 </form>
                 <p class="type-label-md" style="color: #aaa">
-                    The roulette saves automatically.
+                    La ruleta se guarda automáticamente.
                 </p>
                 <form class="save">
-                    <p>Manual Load/Save</p>
+                    <p>Carga/Guardado manual</p>
                     <div class="btns">
-                        <Btn @click.native.prevent="onImport">Import</Btn>
-                        <Btn :disabled="!isActive" @click.native.prevent="onExport">Export</Btn>
+                        <Btn @click.native.prevent="onImport">Importar</Btn>
+                        <Btn :disabled="!isActive" @click.native.prevent="onExport">Exportar</Btn>
                     </div>
                 </form>
             </div>
@@ -63,16 +63,16 @@ export default {
                             </div>
                             <form class="actions" v-if="!givenUp">
                                 <input type="number" v-model="percentage" :placeholder="placeholder" :min="currentPercentage + 1" max=100>
-                                <Btn @click.native.prevent="onDone">Done</Btn>
-                                <Btn @click.native.prevent="onGiveUp" style="background-color: #e91e63;">Give Up</Btn>
+                                <Btn @click.native.prevent="onDone">Listo</Btn>
+                                <Btn @click.native.prevent="onGiveUp" style="background-color: #e91e63;">Rendirse</Btn>
                             </form>
                         </div>
                         <!-- Results -->
                         <div v-if="givenUp || hasCompleted" class="results">
-                            <h1>Results</h1>
-                            <p>Number of levels: {{ progression.length }}</p>
-                            <p>Highest percent: {{ currentPercentage }}%</p>
-                            <Btn v-if="currentPercentage < 99 && !hasCompleted" @click.native.prevent="showRemaining = true">Show remaining levels</Btn>
+                            <h1>Resultados</h1>
+                            <p>Cantidad de niveles: {{ progression.length }}</p>
+                            <p>Porcentaje más alto: {{ currentPercentage }}%</p>
+                            <Btn v-if="currentPercentage < 99 && !hasCompleted" @click.native.prevent="showRemaining = true">Mostrar niveles restantes</Btn>
                         </div>
                         <!-- Remaining Levels -->
                         <template v-if="givenUp && showRemaining">
@@ -137,7 +137,7 @@ export default {
             return this.progression[this.progression.length - 1] || 0;
         },
         placeholder() {
-            return `At least ${this.currentPercentage + 1}%`;
+            return `Al menos ${this.currentPercentage + 1}%`;
         },
         hasCompleted() {
             return (
@@ -159,7 +159,7 @@ export default {
         getYoutubeIdFromUrl,
         async onStart() {
             if (this.isActive) {
-                this.showToast('Give up before starting a new roulette.');
+                this.showToast('Ríndete antes de comenzar una nueva ruleta.');
                 return;
             }
 
@@ -174,7 +174,7 @@ export default {
             if (fullList.filter(([_, err]) => err).length > 0) {
                 this.loading = false;
                 this.showToast(
-                    'List is currently broken. Wait until it\'s fixed to start a roulette.',
+                    'La lista está rota por ahora. Espera a que se arregle para comenzar una ruleta.',
                 );
                 return;
             }
@@ -218,7 +218,7 @@ export default {
                 this.percentage <= this.currentPercentage ||
                 this.percentage > 100
             ) {
-                this.showToast('Invalid percentage.');
+                this.showToast('Porcentaje inválido.');
                 return;
             }
 
@@ -236,7 +236,7 @@ export default {
         onImport() {
             if (
                 this.isActive &&
-                !window.confirm('This will overwrite the currently running roulette. Continue?')
+                !window.confirm('Esto sobrescribirá la ruleta en curso. ¿Continuar?')
             ) {
                 return;
             }
@@ -249,7 +249,7 @@ export default {
             const file = this.fileInput.files[0];
 
             if (file.type !== 'application/json') {
-                this.showToast('Invalid file.');
+                this.showToast('Archivo inválido.');
                 return;
             }
 
@@ -257,7 +257,7 @@ export default {
                 const roulette = JSON.parse(await file.text());
 
                 if (!roulette.levels || !roulette.progression) {
-                    this.showToast('Invalid file.');
+                    this.showToast('Archivo inválido.');
                     return;
                 }
 
@@ -268,7 +268,7 @@ export default {
                 this.showRemaining = false;
                 this.percentage = undefined;
             } catch {
-                this.showToast('Invalid file.');
+                this.showToast('Archivo inválido.');
                 return;
             }
         },
