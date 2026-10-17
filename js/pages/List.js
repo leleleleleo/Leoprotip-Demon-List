@@ -43,7 +43,7 @@ export default {
                     <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
                     <ul class="stats">
                         <li>
-                            <div class="type-title-sm">Points when completed</div>
+                            <div class="type-title-sm">Puntos al completar</div>
                             <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
                         </li>
                         <li>
@@ -51,14 +51,14 @@ export default {
                             <p>{{ level.id }}</p>
                         </li>
                         <li>
-                            <div class="type-title-sm">Password</div>
-                            <p>{{ level.password || 'Free to Copy' }}</p>
+                            <div class="type-title-sm">Contraseña</div>
+                            <p>{{ level.password || 'Copia libre' }}</p>
                         </li>
                     </ul>
-                    <h2>Records</h2>
-                    <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> or better to qualify</p>
-                    <p v-else-if="selected +1 <= 150"><strong>100%</strong> or better to qualify</p>
-                    <p v-else>This level does not accept new records.</p>
+                    <h2>Récords</h2>
+                    <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> o más para calificar</p>
+                    <p v-else-if="selected +1 <= 150"><strong>100%</strong> o más para calificar</p>
+                    <p v-else>Este nivel ya no acepta nuevos récords.</p>
                     <table class="records">
                         <tr v-for="record in level.records" class="record">
                             <td class="percent">
@@ -86,10 +86,10 @@ export default {
                         <p class="error" v-for="error of errors">{{ error }}</p>
                     </div>
                     <div class="og">
-                        <p class="type-label-md">Website layout made by <a href="https://tsl.pages.dev/" target="_blank">TheShittyList</a></p>
+                        <p class="type-label-md">Diseño del sitio web creado por <a href="https://tsl.pages.dev/" target="_blank">TheShittyList</a></p>
                     </div>
                     <template v-if="editors">
-                        <h3>List Editors</h3>
+                        <h3>Editores de la lista</h3>
                         <ol class="editors">
                             <li v-for="editor in editors">
                                 <img :src="\`assets/\${roleIconMap[editor.role]}\${store.dark ? '-dark' : ''}.svg\`" :alt="editor.role">
@@ -98,30 +98,30 @@ export default {
                             </li>
                         </ol>
                     </template>
-                    <h3>Submission Requirements</h3>
+                    <h3>Requisitos de envío</h3>
                     <p>
-                        Achieved the record without using hacks (however, FPS bypass is allowed, up to 360fps)
+                        Haber logrado el récord sin usar hacks (sin embargo, se permite el FPS bypass, hasta 360 fps)
                     </p>
                     <p>
-                        Achieved the record on the level that is listed on the site - please check the level ID before you submit a record
+                        Haber logrado el récord en el nivel que aparece en el sitio; por favor revisa el ID del nivel antes de enviar un récord
                     </p>
                     <p>
-                        Have either source audio or clicks/taps in the video. Edited audio only does not count
+                        Que el video tenga el audio original o los clics/toques. El audio editado por sí solo no cuenta
                     </p>
                     <p>
-                        The recording must have a previous attempt and entire death animation shown before the completion, unless the completion is on the first attempt. Everyplay records are exempt from this
+                        La grabación debe mostrar un intento previo y la animación de muerte completa antes de la finalización, a menos que la finalización sea en el primer intento. Los récords de Everyplay están exentos de esto
                     </p>
                     <p>
-                        The recording must also show the player hit the endwall, or the completion will be invalidated.
+                        La grabación también debe mostrar al jugador tocando la pared final (endwall); de lo contrario, la finalización será invalidada.
                     </p>
                     <p>
-                        Do not use secret routes or bug routes
+                        No usar rutas secretas ni rutas con bugs
                     </p>
                     <p>
-                        Do not use easy modes, only a record of the unmodified level qualifies
+                        No usar modos fáciles; solo califica un récord del nivel sin modificar
                     </p>
                     <p>
-                        Once a level falls onto the Legacy List, we accept records for it for 24 hours after it falls off, then afterwards we never accept records for said level
+                        Una vez que un nivel cae a la Legacy List, aceptamos récords de ese nivel durante 24 horas después de que salga de la lista; pasado ese tiempo, nunca más aceptamos récords de dicho nivel
                     </p>
                 </div>
             </div>
@@ -160,18 +160,18 @@ export default {
         // Error handling
         if (!this.list) {
             this.errors = [
-                "Failed to load list. Retry in a few minutes or notify list staff.",
+                "No se pudo cargar la lista. Inténtalo de nuevo en unos minutos o avisa al staff de la lista.",
             ];
         } else {
             this.errors.push(
                 ...this.list
                     .filter(([_, err]) => err)
                     .map(([_, err]) => {
-                        return `Failed to load level. (${err}.json)`;
+                        return `No se pudo cargar el nivel. (${err}.json)`;
                     })
             );
             if (!this.editors) {
-                this.errors.push("Failed to load list editors.");
+                this.errors.push("No se pudieron cargar los editores de la lista.");
             }
         }
 
