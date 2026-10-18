@@ -7,11 +7,12 @@
     "verification": "https://www.youtube.com/watch?v=ozGsB1IBLEE",
     "percentToQualify": 30,
     "password": "",
-    "records": []
-    {
+    "records": [
+        {
     "user": "yungatita",
     "link": "https://youtu.be/pfBXUe6uYiw?si=U4gTqUA4za_USfiJ",
     "percent": 89,
     "hz": 60
-    }
+        }
+    ]
 }
