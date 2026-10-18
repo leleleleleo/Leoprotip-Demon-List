@@ -47,6 +47,15 @@ export async function fetchEditors() {
     }
 }
 
+/**
+ * Text used in a level's `verifier` field while nobody has verified it yet
+ */
+const PENDING_VERIFIER = 'por verificar';
+
+function isPendingVerifier(verifier) {
+    return String(verifier ?? '').trim().toLowerCase() === PENDING_VERIFIER;
+}
+
 export async function fetchLeaderboard() {
     const list = await fetchList();
 
@@ -59,21 +68,25 @@ export async function fetchLeaderboard() {
         }
 
         // Verification
-        const verifier = Object.keys(scoreMap).find(
-            (u) => u.toLowerCase() === level.verifier.toLowerCase(),
-        ) || level.verifier;
-        scoreMap[verifier] ??= {
-            verified: [],
-            completed: [],
-            progressed: [],
-        };
-        const { verified } = scoreMap[verifier];
-        verified.push({
-            rank: rank + 1,
-            level: level.name,
-            score: score(rank + 1, 100, level.percentToQualify),
-            link: level.verification,
-        });
+        // Levels still waiting for a verifier ("Por verificar") don't credit
+        // anyone in the leaderboard. Records from other players still count.
+        if (!isPendingVerifier(level.verifier)) {
+            const verifier = Object.keys(scoreMap).find(
+                (u) => u.toLowerCase() === level.verifier.toLowerCase(),
+            ) || level.verifier;
+            scoreMap[verifier] ??= {
+                verified: [],
+                completed: [],
+                progressed: [],
+            };
+            const { verified } = scoreMap[verifier];
+            verified.push({
+                rank: rank + 1,
+                level: level.name,
+                score: score(rank + 1, 100, level.percentToQualify),
+                link: level.verification,
+            });
+        }
 
         // Records
         level.records.forEach((record) => {
