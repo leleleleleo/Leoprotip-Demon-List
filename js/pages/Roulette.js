@@ -24,6 +24,10 @@ export default {
                         <input type="checkbox" id="extended" value="Extended List" v-model="useExtendedList">
                         <label for="extended">Lista extendida</label>
                     </div>
+                    <div class="check">
+                        <input type="checkbox" id="unrated" value="Unrated List" v-model="useUnrated">
+                        <label for="unrated">Lista sin rate</label>
+                    </div>
                     <Btn @click.native.prevent="onStart">{{ levels.length === 0 ? 'Comenzar' : 'Reiniciar'}}</Btn>
                 </form>
                 <p class="type-label-md" style="color: #aaa">
@@ -46,7 +50,7 @@ export default {
                                 <img :src="getThumbnailFromId(getYoutubeIdFromUrl(level.video))" alt="">
                             </a>
                             <div class="meta">
-                                <p>#{{ level.rank }}</p>
+                                <p>{{ rankLabel(level) }}</p>
                                 <h2>{{ level.name }}</h2>
                                 <p style="color: #00b54b; font-weight: 700">{{ progression[i] }}%</p>
                             </div>
@@ -57,7 +61,7 @@ export default {
                                 <img :src="getThumbnailFromId(getYoutubeIdFromUrl(currentLevel.video))" alt="">
                             </a>
                             <div class="meta">
-                                <p>#{{ currentLevel.rank }}</p>
+                                <p>{{ rankLabel(currentLevel) }}</p>
                                 <h2>{{ currentLevel.name }}</h2>
                                 <p>{{ currentLevel.id }}</p>
                             </div>
@@ -81,7 +85,7 @@ export default {
                                     <img :src="getThumbnailFromId(getYoutubeIdFromUrl(level.video))" alt="">
                                 </a>
                                 <div class="meta">
-                                    <p>#{{ level.rank }}</p>
+                                    <p>{{ rankLabel(level) }}</p>
                                     <h2>{{ level.name }}</h2>
                                     <p style="color: #d50000; font-weight: 700">{{ currentPercentage + 2 + i }}%</p>
                                 </div>
@@ -108,6 +112,7 @@ export default {
         showRemaining: false,
         useMainList: true,
         useExtendedList: true,
+        useUnrated: false,
         toasts: [],
         fileInput: undefined,
     }),
@@ -157,38 +162,72 @@ export default {
         shuffle,
         getThumbnailFromId,
         getYoutubeIdFromUrl,
+        rankLabel(level) {
+            return level.unrated ? `Sin rate #${level.rank}` : `#${level.rank}`;
+        },
         async onStart() {
             if (this.isActive) {
                 this.showToast('Ríndete antes de comenzar una nueva ruleta.');
                 return;
             }
 
-            if (!this.useMainList && !this.useExtendedList) {
+            if (!this.useMainList && !this.useExtendedList && !this.useUnrated) {
                 return;
             }
 
             this.loading = true;
 
-            const fullList = await fetchList();
+            const list = [];
 
-            if (fullList.filter(([_, err]) => err).length > 0) {
-                this.loading = false;
-                this.showToast(
-                    'La lista está rota por ahora. Espera a que se arregle para comenzar una ruleta.',
-                );
-                return;
+            if (this.useMainList || this.useExtendedList) {
+                const fullList = await fetchList();
+
+                if (!fullList || fullList.filter(([_, err]) => err).length > 0) {
+                    this.loading = false;
+                    this.showToast(
+                        'La lista está rota por ahora. Espera a que se arregle para comenzar una ruleta.',
+                    );
+                    return;
+                }
+
+                const fullListMapped = fullList.map(([lvl, _], i) => ({
+                    rank: i + 1,
+                    id: lvl.id,
+                    name: lvl.name,
+                    video: lvl.verification,
+                }));
+                if (this.useMainList) list.push(...fullListMapped.slice(0, 75));
+                if (this.useExtendedList) {
+                    list.push(...fullListMapped.slice(75, 150));
+                }
             }
 
-            const fullListMapped = fullList.map(([lvl, _], i) => ({
-                rank: i + 1,
-                id: lvl.id,
-                name: lvl.name,
-                video: lvl.verification,
-            }));
-            const list = [];
-            if (this.useMainList) list.push(...fullListMapped.slice(0, 75));
-            if (this.useExtendedList) {
-                list.push(...fullListMapped.slice(75, 150));
+            if (this.useUnrated) {
+                const unratedList = await fetchList('data/unrated');
+
+                if (!unratedList || unratedList.filter(([_, err]) => err).length > 0) {
+                    this.loading = false;
+                    this.showToast(
+                        'La lista sin rate no se pudo cargar. Inténtalo de nuevo más tarde.',
+                    );
+                    return;
+                }
+
+                list.push(
+                    ...unratedList.map(([lvl, _], i) => ({
+                        rank: i + 1,
+                        id: lvl.id,
+                        name: lvl.name,
+                        video: lvl.verification,
+                        unrated: true,
+                    })),
+                );
+            }
+
+            if (list.length === 0) {
+                this.loading = false;
+                this.showToast('No hay niveles disponibles con esas opciones.');
+                return;
             }
 
             // random 100 levels
