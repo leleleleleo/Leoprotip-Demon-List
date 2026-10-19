@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/Io-V2S9XNa8?si=z7VeseHtpKneYelV",
     "percentToQualify": 50,
     "password": "121214",
-    "records": []
+    "records": [
+        {
+    "user": "SkibidiLeche",
+    "link": "https://www.youtube.com/watch?v=8QlSZV4drmA",
+    "percent": 100,
+    "hz": 60
+        }
+    ]
 }
