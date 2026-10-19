@@ -44,6 +44,9 @@
                 <router-link class="nav__tab" to="/">
                     <span class="type-label-lg">Lista</span>
                 </router-link>
+                <router-link class="nav__tab" to="/sin-rate">
+                    <span class="type-label-lg">Sin rate</span>
+                </router-link>
                 <router-link class="nav__tab" to="/leaderboard">
                     <span class="type-label-lg">Clasificación</span>
                 </router-link>
@@ -74,6 +77,6 @@
                 </div>
             </nav>
         </header>
-        <router-view :class="{ dark: store.dark }"></router-view>
+        <router-view :key="$route.path" :class="{ dark: store.dark }"></router-view>
     </body>
 </html>
