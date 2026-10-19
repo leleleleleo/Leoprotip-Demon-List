@@ -16,6 +16,10 @@ const roleIconMap = {
 
 export default {
     components: { Spinner, LevelAuthors },
+    props: {
+        // true on the "Sin rate" tab: separate list, no points, no records
+        unrated: { type: Boolean, default: false },
+    },
     template: `
         <main v-if="loading">
             <Spinner></Spinner>
@@ -25,7 +29,7 @@ export default {
                 <table class="list" v-if="list">
                     <tr v-for="([level, err], i) in list">
                         <td class="rank">
-                            <p v-if="i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
+                            <p v-if="unrated || i + 1 <= 150" class="type-label-lg">#{{ i + 1 }}</p>
                             <p v-else class="type-label-lg">Legacy</p>
                         </td>
                         <td class="level" :class="{ 'active': selected == i, 'error': !level }">
@@ -42,7 +46,7 @@ export default {
                     <LevelAuthors :author="level.author" :creators="level.creators" :verifier="level.verifier"></LevelAuthors>
                     <iframe class="video" id="videoframe" :src="video" frameborder="0"></iframe>
                     <ul class="stats">
-                        <li>
+                        <li v-if="!unrated">
                             <div class="type-title-sm">Puntos al completar</div>
                             <p>{{ score(selected + 1, 100, level.percentToQualify) }}</p>
                         </li>
@@ -55,29 +59,32 @@ export default {
                             <p>{{ level.password || 'Copia libre' }}</p>
                         </li>
                     </ul>
-                    <h2>Récords</h2>
-                    <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> o más para calificar</p>
-                    <p v-else-if="selected +1 <= 150"><strong>100%</strong> o más para calificar</p>
-                    <p v-else>Este nivel ya no acepta nuevos récords.</p>
-                    <table class="records">
-                        <tr v-for="record in level.records" class="record">
-                            <td class="percent">
-                                <p>{{ record.percent }}%</p>
-                            </td>
-                            <td class="user">
-                                <a :href="record.link" target="_blank" class="type-label-lg">{{ record.user }}</a>
-                            </td>
-                            <td class="mobile">
-                                <img v-if="record.mobile" :src="\`assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="Mobile">
-                            </td>
-                            <td class="hz">
-                                <p>{{ record.hz }}Hz</p>
-                            </td>
-                        </tr>
-                    </table>
+                    <template v-if="!unrated">
+                        <h2>Récords</h2>
+                        <p v-if="selected + 1 <= 75"><strong>{{ level.percentToQualify }}%</strong> o más para calificar</p>
+                        <p v-else-if="selected +1 <= 150"><strong>100%</strong> o más para calificar</p>
+                        <p v-else>Este nivel ya no acepta nuevos récords.</p>
+                        <table class="records">
+                            <tr v-for="record in level.records" class="record">
+                                <td class="percent">
+                                    <p>{{ record.percent }}%</p>
+                                </td>
+                                <td class="user">
+                                    <a :href="record.link" target="_blank" class="type-label-lg">{{ record.user }}</a>
+                                </td>
+                                <td class="mobile">
+                                    <img v-if="record.mobile" :src="\`assets/phone-landscape\${store.dark ? '-dark' : ''}.svg\`" alt="Mobile">
+                                </td>
+                                <td class="hz">
+                                    <p>{{ record.hz }}Hz</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </template>
                 </div>
                 <div v-else class="level" style="height: 100%; justify-content: center; align-items: center;">
-                    <p>(ノಠ益ಠ)ノ彡┻━┻</p>
+                    <p v-if="unrated && list && list.length === 0">Todavía no hay niveles en esta lista.</p>
+                    <p v-else>(ノಠ益ಠ)ノ彡┻━┻</p>
                 </div>
             </div>
             <div class="meta-container">
@@ -123,6 +130,9 @@ export default {
                     <p>
                         Una vez que un nivel cae a la Legacy List, aceptamos récords de ese nivel durante 24 horas después de que salga de la lista; pasado ese tiempo, nunca más aceptamos récords de dicho nivel
                     </p>
+                    <p v-if="unrated">
+                        Esta es una lista extendida por diversión, no califica para puntos ni récords. Los rankings de los niveles pueden variar con su opinión, así que no confíes 100% en ellos.
+                    </p>
                 </div>
             </div>
         </main>
@@ -138,7 +148,8 @@ export default {
     }),
     computed: {
         level() {
-            return this.list[this.selected][0];
+            const entry = this.list?.[this.selected];
+            return entry ? entry[0] : null;
         },
         video() {
             if (!this.level.showcase) {
@@ -154,7 +165,7 @@ export default {
     },
     async mounted() {
         // Hide loading spinner
-        this.list = await fetchList();
+        this.list = await fetchList(this.unrated ? 'data/unrated' : 'data');
         this.editors = await fetchEditors();
 
         // Error handling
