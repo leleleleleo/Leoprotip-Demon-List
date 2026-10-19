@@ -1,12 +1,13 @@
 import { round, score } from './score.js';
 
 /**
- * Path to directory containing `_list.json` and all levels
+ * Default path to the directory containing `_list.json` and all levels
+ * (the "Sin rate" list passes its own folder, `data/unrated`)
  */
 // Relative path: works on GitHub Pages under any repo name, and locally
-const dir = 'data';
+const DEFAULT_DIR = 'data';
 
-export async function fetchList() {
+export async function fetchList(dir = DEFAULT_DIR) {
     const listResult = await fetch(`${dir}/_list.json`);
     try {
         const list = await listResult.json();
@@ -19,7 +20,7 @@ export async function fetchList() {
                         {
                             ...level,
                             path,
-                            records: level.records.sort(
+                            records: (level.records ?? []).sort(
                                 (a, b) => b.percent - a.percent,
                             ),
                         },
@@ -39,7 +40,7 @@ export async function fetchList() {
 
 export async function fetchEditors() {
     try {
-        const editorsResults = await fetch(`${dir}/_editors.json`);
+        const editorsResults = await fetch(`${DEFAULT_DIR}/_editors.json`);
         const editors = await editorsResults.json();
         return editors;
     } catch {
