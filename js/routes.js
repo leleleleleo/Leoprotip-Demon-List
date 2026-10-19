@@ -4,6 +4,7 @@ import Roulette from './pages/Roulette.js';
 
 export default [
     { path: '/', component: List },
+    { path: '/sin-rate', component: List, props: { unrated: true } },
     { path: '/leaderboard', component: Leaderboard },
     { path: '/roulette', component: Roulette },
 ];
