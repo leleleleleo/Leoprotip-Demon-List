@@ -87,6 +87,48 @@ export default {
                                 </td>
                             </tr>
                         </table>
+                        <h2 v-if="entry.verifiedUnrated.length > 0">Sin rate: verificados ({{ entry.verifiedUnrated.length }})</h2>
+                        <table class="table">
+                            <tr v-for="score in entry.verifiedUnrated">
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
+                                </td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>Sin puntos</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <h2 v-if="entry.completedUnrated.length > 0">Sin rate: completados ({{ entry.completedUnrated.length }})</h2>
+                        <table class="table">
+                            <tr v-for="score in entry.completedUnrated">
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
+                                </td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>Sin puntos</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <h2 v-if="entry.progressedUnrated.length > 0">Sin rate: progreso ({{ entry.progressedUnrated.length }})</h2>
+                        <table class="table">
+                            <tr v-for="score in entry.progressedUnrated">
+                                <td class="rank">
+                                    <p>#{{ score.rank }}</p>
+                                </td>
+                                <td class="level">
+                                    <a class="type-label-lg" target="_blank" :href="score.link">{{ score.percent }}% {{ score.level }}</a>
+                                </td>
+                                <td class="score">
+                                    <p>Sin puntos</p>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
