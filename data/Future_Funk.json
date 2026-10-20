@@ -13,6 +13,13 @@
     "link": "https://www.youtube.com/watch?v=MzdtVv8WT5U",
     "percent": 100,
     "hz": 60
+        },
+        {
+    "user": "Nandoju2002",
+    "link": "https://youtu.be/cXZ0GKFTKkE",
+    "percent": 100,
+    "hz": 60,
+    "mobile": true
         }
     ]
 }
