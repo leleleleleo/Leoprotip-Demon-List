@@ -7,5 +7,12 @@
     "verification": "https://m.youtube.com/watch?v=U4wPQyEoHJ8&t=11s",
     "percentToQualify": 0,
     "password": "",
-    "records": []
+    "records": [
+        {
+    "user": "unpibe1798",
+    "link": "https://youtu.be/JeXSc0aCa0g?si=_Y7TPWPhhPSyylkc",
+    "percent": 100,
+    "hz": 60
+        }        
+    ]
 }
