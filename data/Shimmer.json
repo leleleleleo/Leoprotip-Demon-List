@@ -1,1 +1,18 @@
-
+{
+    "id": 94156085,
+    "name": "Shimmer",
+    "author": "neigefeu",
+    "creators": [],
+    "verifier": "Por verificar",
+    "verification": "https://www.youtube.com/watch?v=_vuXb2PHiOI",
+    "percentToQualify": 0,
+    "password": "idrk",
+    "records": [
+        {
+    "user": "Extasy",
+    "link": "https://youtu.be/FMlQay9Mkpg",
+    "percent": 69,
+    "hz": 165
+        }
+    ]
+}
