@@ -1,0 +1,28 @@
+.page-submit {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+}
+.page-submit h1 { margin-bottom: 1rem; }
+.page-submit form { display: flex; flex-direction: column; gap: 0.9rem; }
+.page-submit label { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 600; }
+.page-submit label.inline { flex-direction: row; align-items: center; gap: 0.5rem; }
+.page-submit input, .page-submit select {
+    font: inherit; padding: 0.55rem 0.7rem; border-radius: 0.4rem;
+    border: 1px solid #8884; background: var(--color-background);
+    color: var(--color-on-background);
+}
+.page-submit details { display: flex; flex-direction: column; gap: 0.9rem; }
+.page-submit summary { cursor: pointer; margin-bottom: 0.9rem; font-weight: 600; }
+.page-submit .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.page-submit .note { padding: 0.6rem 0.8rem; border-radius: 0.4rem; }
+.page-submit .note.error { background: var(--color-error); color: var(--color-on-error); }
+.page-submit .note.ok { background: #1b7f3b; color: white; }
+.page-admin .toolbar { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.submission { border: 1px solid #8884; border-radius: 0.5rem; padding: 0.8rem 1rem; margin-bottom: 0.8rem; }
+.submission.approved { border-left: 5px solid #1b7f3b; }
+.submission.rejected { border-left: 5px solid var(--color-error); opacity: 0.75; }
+.submission.pending { border-left: 5px solid #e0a800; }
+.submission .meta { font-size: 0.85rem; opacity: 0.75; }
+.submission .badge { float: right; font-size: 0.8rem; opacity: 0.8; }
+.submission .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; }
