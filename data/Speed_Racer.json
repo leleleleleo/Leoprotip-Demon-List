@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/W_LCUkjHXFU",
     "percentToQualify": 0,
     "password": "",
-    "records": []
+    "records": [
+        {
+    "user": "POTO",
+    "link": "https://www.youtube.com/shorts/9_vcavBb_P8",
+    "percent": 100
+        }
+    ]
+    
 }
