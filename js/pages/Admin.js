@@ -11,6 +11,7 @@ export default {
     components: { Btn, Spinner },
     template: `
         <main class="page-submit page-admin">
+          <div class="wrap">
             <h1>Panel del staff</h1>
             <p v-if="!configured" class="note error">Falta configurar js/config.js.</p>
             <form v-else-if="!authed" @submit.prevent="onLogin">
@@ -60,6 +61,7 @@ export default {
                     </div>
                 </article>
             </template>
+          </div>
         </main>
     `,
     data: () => ({

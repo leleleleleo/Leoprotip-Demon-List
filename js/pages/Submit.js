@@ -5,6 +5,7 @@ export default {
     components: { Btn },
     template: `
         <main class="page-submit">
+          <div class="wrap">
             <h1>Enviar récord</h1>
             <p v-if="!configured" class="note error">El formulario todavía no está configurado (falta js/config.js).</p>
             <p v-else-if="sent" class="note ok">¡Enviado! El staff lo revisará pronto. Gracias.</p>
@@ -27,6 +28,7 @@ export default {
                 <p v-if="error" class="note error">{{ error }}</p>
                 <Btn :disabled="busy" @click.native.prevent="onSubmit">{{ busy ? 'Enviando…' : 'Enviar' }}</Btn>
             </form>
+          </div>
         </main>
     `,
     data: () => ({
