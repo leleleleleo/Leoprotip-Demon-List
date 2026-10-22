@@ -4,6 +4,7 @@ import {
 } from '../supabase.js';
 import Btn from '../components/Btn.js';
 import Spinner from '../components/Spinner.js';
+import { setPhoneViewport } from '../util.js';
 
 const STATUS = { pending: 'Pendiente', approved: 'Aprobado', rejected: 'Rechazado' };
 
@@ -77,8 +78,10 @@ export default {
         },
     },
     mounted() {
+        setPhoneViewport(true);
         if (this.authed) this.load();
     },
+    unmounted() { setPhoneViewport(false); },
     methods: {
         async onLogin() {
             this.error = '';

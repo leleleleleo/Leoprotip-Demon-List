@@ -36,3 +36,16 @@ export function shuffle(array) {
 
     return array;
 }
+
+// The site is built for a 1024px-wide screen (see index.html), which looks tiny on phones.
+// Pages that are designed for small screens switch the viewport while they are open.
+const DESKTOP_VIEWPORT = 'width=1024';
+export function setPhoneViewport(on) {
+    const meta = document.querySelector('meta[name="viewport"]');
+    if (meta) {
+        meta.setAttribute(
+            'content',
+            on ? 'width=device-width, initial-scale=1' : DESKTOP_VIEWPORT,
+        );
+    }
+}

@@ -1,5 +1,6 @@
 import { isConfigured, submitRecord } from '../supabase.js';
 import Btn from '../components/Btn.js';
+import { setPhoneViewport } from '../util.js';
 
 export default {
     components: { Btn },
@@ -42,6 +43,8 @@ export default {
             channel: '', hz: null, password: '', creators: '', verifier: '', publisher: '',
         },
     }),
+    mounted() { setPhoneViewport(true); },
+    unmounted() { setPhoneViewport(false); },
     methods: {
         async onSubmit() {
             if (this.busy) return;
