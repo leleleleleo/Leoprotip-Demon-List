@@ -1,0 +1,58 @@
+.page-submit {
+    display: block;
+    height: 0;
+    overflow-y: auto;
+    padding: 2rem 1rem 4rem;
+}
+.page-submit .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+}
+.page-submit h1 { margin: 0 0 1.5rem; font-size: 2rem; }
+.page-submit form { display: flex; flex-direction: column; gap: 1.1rem; align-items: stretch; }
+.page-submit label { display: flex; flex-direction: column; gap: 0.35rem; font-weight: 600; }
+.page-submit label.inline { flex-direction: row; align-items: center; gap: 0.5rem; }
+.page-submit input, .page-submit select {
+    font: inherit; font-weight: 400; padding: 0.65rem 0.8rem; border-radius: 0.4rem;
+    border: 1px solid #8a8a94; background: var(--color-background);
+    color: var(--color-on-background); width: 100%; box-sizing: border-box;
+}
+.page-submit select { width: auto; }
+.page-submit input:focus, .page-submit select:focus {
+    outline: 2px solid var(--color-primary); outline-offset: 1px;
+}
+.page-submit details { display: flex; flex-direction: column; gap: 1.1rem; font-family: inherit; }
+.page-submit summary {
+    cursor: pointer; font-weight: 700; font-family: inherit; font-size: 1.25rem;
+    margin-bottom: 0.3rem; padding: 0.9rem 1rem; border-radius: 0.5rem;
+    border: 2px solid var(--color-primary); background: var(--color-background-hover);
+}
+.page-submit details[open] summary { border-style: dashed; }
+.page-submit .btn { align-self: flex-start; }
+.page-submit .trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.page-submit .note { padding: 0.7rem 0.9rem; border-radius: 0.4rem; margin: 0; }
+.page-submit .note.error { background: var(--color-error); color: var(--color-on-error); }
+.page-submit .note.ok { background: #1b7f3b; color: white; }
+.page-admin .toolbar { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+.submission { border: 1px solid #8a8a94; border-radius: 0.5rem; padding: 0.9rem 1.1rem; margin-bottom: 0.9rem; }
+.submission p { margin: 0.35rem 0; }
+.submission a { text-decoration: underline; }
+.submission.approved { border-left: 5px solid #1b7f3b; }
+.submission.rejected { border-left: 5px solid var(--color-error); opacity: 0.75; }
+.submission.pending { border-left: 5px solid #e0a800; }
+.submission .meta { font-size: 0.85rem; opacity: 0.75; }
+.submission .badge { float: right; font-size: 0.8rem; opacity: 0.8; }
+.submission .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.7rem; }
+
+/* Phones: only reached while a page switches the viewport to device-width */
+@media screen and (max-width: 700px) {
+    header { overflow-x: auto; padding-inline: 0.75rem; height: auto; min-height: 4rem; }
+    header .logo { gap: 0.5rem; }
+    .nav { column-gap: 0.5rem; }
+    .nav .nav__actions .nav__cta { padding: 0.6rem; margin-left: 0.5rem; }
+    .page-submit { padding: 1.25rem 1rem 4rem; }
+    .page-submit h1 { font-size: 1.6rem; }
+    .page-submit input, .page-submit select { font-size: 16px; } /* avoids the iOS zoom on focus */
+    .page-submit .btn { align-self: stretch; }
+    .submission .actions .btn { flex: 1 1 45%; }
+}
