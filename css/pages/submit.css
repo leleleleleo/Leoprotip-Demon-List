@@ -25,7 +25,8 @@
 .page-submit summary {
     cursor: pointer; font-weight: 700; font-family: inherit; font-size: 1.25rem;
     margin-bottom: 0.3rem; padding: 0.9rem 1rem; border-radius: 0.5rem;
-    border: 2px solid var(--color-primary); background: var(--color-background-hover);
+    border: 2px solid var(--color-primary); background: var(--color-primary);
+    color: var(--color-on-primary);
 }
 .page-submit details[open] summary { border-style: dashed; }
 .page-submit .btn { align-self: flex-start; }
