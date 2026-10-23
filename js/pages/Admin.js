@@ -45,7 +45,8 @@ export default {
                     <p class="meta">{{ new Date(s.created_at).toLocaleString() }}</p>
                     <p><a :href="s.video" target="_blank" rel="noopener">Video</a>
                         <template v-if="s.channel"> · <a :href="s.channel" target="_blank" rel="noopener">Canal</a></template>
-                        <template v-if="s.hz"> · {{ s.hz }} FPS</template></p>
+                        <template v-if="s.hz"> · {{ s.hz }} FPS</template>
+                        <template v-if="s.mobile"> · Móvil</template></p>
                     <p v-if="s.password || s.creators || s.verifier || s.publisher" class="meta">
                         Nivel nuevo —
                         <template v-if="s.publisher">publisher: {{ s.publisher }}; </template>
@@ -127,6 +128,7 @@ export default {
         recordJson(s) {
             const r = { user: s.nickname, link: s.video, percent: s.progress };
             if (s.hz) r.hz = s.hz;
+            if (s.mobile) r.mobile = true;
             return JSON.stringify(r, null, 4);
         },
         levelJson(s) {

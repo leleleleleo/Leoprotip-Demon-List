@@ -58,3 +58,7 @@ export const deleteSubmission = (id) =>
     call(`/rest/v1/submissions?id=eq.${encodeURIComponent(id)}`, {
         method: 'DELETE', token: getToken(), prefer: 'return=minimal',
     });
+
+// Public, read-only list of pending submissions (the database view only exposes safe columns)
+export const listPending = () =>
+    call('/rest/v1/pending_public?select=nickname,progress,level_name,created_at&order=created_at.desc&limit=50');

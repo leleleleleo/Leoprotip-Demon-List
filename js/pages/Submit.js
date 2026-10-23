@@ -30,7 +30,7 @@ export default {
                     <label>Progreso * <small>(porcentaje)</small><input v-model.number="f.progress" type="number" min="1" max="100" required></label>
                     <label>Nombre del nivel *<input v-model.trim="f.level_name" maxlength="100" required></label>
                     <label>Id del nivel *<input v-model.trim="f.level_id" inputmode="numeric" pattern="[0-9]{1,12}" required></label>
-                    <label>Hz * <small>(los que usaste, ej. 60, 120, 240)</small><input v-model.number="f.hz" type="number" min="1" max="1000" inputmode="numeric" required></label>
+                    <label>FPS / Hz con los que jugaste<input v-model.number="f.hz" type="number" min="1" max="1000"></label>
                     <label>¿Móvil? <small>(sí/no)</small>
                         <select v-model="f.mobile">
                             <option :value="false">No</option>
@@ -104,7 +104,7 @@ export default {
             if (this.trap) { this.sent = true; return; } // bot: se ignora en silencio
             const f = this.f;
             if (!f.nickname || !f.level_name || !/^\d{1,12}$/.test(f.level_id) ||
-                !(f.progress >= 1 && f.progress <= 100) || !(f.hz >= 1 && f.hz <= 1000)) {
+                !(f.progress >= 1 && f.progress <= 100)) {
                 this.error = 'Revisa los campos obligatorios (*).';
                 return;
             }
