@@ -7,5 +7,12 @@
     "verification": "https://m.youtube.com/watch?v=VSixG4Uz83A&t=23s",
     "percentToQualify": 0,
     "password": "666777",
-    "records": []
+    "records": [
+    {
+    "user": "Bangadabara",
+    "link": "https://www.youtube.com/watch?v=nvaFjeEB5E4",
+    "percent": 100,
+    "hz": 165
+        }    
+    ]
 }
