@@ -46,6 +46,8 @@
 .submission .badge { float: right; font-size: 0.8rem; opacity: 0.8; }
 .submission .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.7rem; }
 
+.page-submit details.locked summary { opacity: 0.5; cursor: not-allowed; }
+
 /* Submit page: form on the left, public pending list on the right */
 .page-submit .cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 2.5rem; align-items: start; }
 .page-submit label small { font-weight: 400; opacity: 0.75; }
