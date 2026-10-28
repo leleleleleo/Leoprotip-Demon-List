@@ -140,7 +140,7 @@ export default {
                 creators,
                 verifier: s.verifier || s.nickname,
                 verification: s.video,
-                percentToQualify: 50,
+                percentToQualify: 0,
                 password: s.password || '',
                 records: [],
             }, null, 4);
