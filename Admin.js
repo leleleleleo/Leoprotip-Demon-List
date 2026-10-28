@@ -45,7 +45,8 @@ export default {
                     <p class="meta">{{ new Date(s.created_at).toLocaleString() }}</p>
                     <p><a :href="s.video" target="_blank" rel="noopener">Video</a>
                         <template v-if="s.channel"> · <a :href="s.channel" target="_blank" rel="noopener">Canal</a></template>
-                        <template v-if="s.hz"> · {{ s.hz }} FPS</template></p>
+                        <template v-if="s.hz"> · {{ s.hz }} FPS</template>
+                        <template v-if="s.mobile"> · Móvil</template></p>
                     <p v-if="s.password || s.creators || s.verifier || s.publisher" class="meta">
                         Nivel nuevo —
                         <template v-if="s.publisher">publisher: {{ s.publisher }}; </template>
@@ -127,21 +128,26 @@ export default {
         recordJson(s) {
             const r = { user: s.nickname, link: s.video, percent: s.progress };
             if (s.hz) r.hz = s.hz;
+            if (s.mobile) r.mobile = true;
             return JSON.stringify(r, null, 4);
         },
         levelJson(s) {
             const creators = (s.creators || '').split(/\s*[,;&\/]\s*|\s+y\s+/i).map((x) => x.trim()).filter(Boolean);
-            return JSON.stringify({
-                id: Number(s.level_id),
-                name: s.level_name,
-                author: s.publisher || '',
-                creators,
-                verifier: s.verifier || s.nickname,
-                verification: s.video,
-                percentToQualify: 50,
-                password: s.password || '',
-                records: [],
-            }, null, 4);
+            const q = JSON.stringify;
+            // Written by hand so "creators" stays on a single line
+            return [
+                '{',
+                `    "id": ${Number(s.level_id)},`,
+                `    "name": ${q(s.level_name)},`,
+                `    "author": ${q(s.publisher || '')},`,
+                `    "creators": [${creators.map((c) => q(c)).join(', ')}],`,
+                `    "verifier": ${q(s.verifier || s.nickname)},`,
+                `    "verification": ${q(s.video)},`,
+                `    "percentToQualify": 0,`,
+                `    "password": ${q(s.password || '')},`,
+                `    "records": []`,
+                '}',
+            ].join('\n');
         },
         async copy(text) {
             try {
