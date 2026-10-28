@@ -1,6 +1,9 @@
 import { isConfigured, submitRecord, listPending } from '../supabase.js';
 import Btn from '../components/Btn.js';
 import { setPhoneViewport } from '../util.js';
+import { fetchList } from '../content.js';
+
+const norm = (s) => String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 
 // Same checks the staff JSON tool uses
 function videoIssue(u) {
@@ -38,8 +41,9 @@ export default {
                         </select>
                     </label>
                     <label>Link del video de YT * <small>(link normal, no Shorts ni en vivo)</small><input v-model.trim="f.video" type="url" maxlength="300" required placeholder="https://youtube.com/watch?v=..."></label>
+                    <p v-if="existing" class="note ok">Este nivel ya está en {{ existing.unrated ? 'la lista Sin rate' : 'la lista' }} (#{{ existing.rank }}, {{ existing.name }}). Tu récord se agregará a ese nivel.</p>
                     <details :class="{ locked: !canNew }" :open="canNew && showNew">
-                        <summary @click.prevent="toggleNew">Solo si es un nivel nuevo para la lista<span v-if="!canNew"> (necesitas 100% de progreso)</span></summary>
+                        <summary @click.prevent="toggleNew">Solo si es un nivel nuevo para la lista<span v-if="existing"> (este nivel ya está en la lista)</span><span v-else-if="!canNew"> (necesitas 100% de progreso)</span></summary>
                         <label>Password <small>(si tiene)</small><input v-model.trim="f.password" maxlength="40"></label>
                         <label>Creadores del nivel <small>(separados por coma)</small><input v-model.trim="f.creators" maxlength="200"></label>
                         <label>Verificador <small>(si eres el primero, pon tu nickname)</small><input v-model.trim="f.verifier" maxlength="60"></label>
@@ -75,6 +79,7 @@ export default {
         pending: null,
         pendingError: false,
         showNew: false,
+        known: [],
         f: {
             nickname: '', progress: null, level_name: '', level_id: '', hz: null, mobile: false,
             video: '', password: '', creators: '', verifier: '', publisher: '',
@@ -82,11 +87,27 @@ export default {
     }),
     computed: {
         // The "new level" section is only for players who beat the level
+        // The level typed in the form, if it is already in the main or unrated list
+        existing() {
+            const id = String(this.f.level_id || '').trim();
+            const name = norm(this.f.level_name);
+            if (!id && !name) return null;
+            return this.known.find((l) => (id && l.id === id) || (name && l.key === name)) || null;
+        },
         canNew() {
-            return this.f.progress === 100;
+            return this.f.progress === 100 && !this.existing;
         },
     },
     watch: {
+        canNew(ok) {
+            if (!ok) {
+                this.showNew = false;
+                this.f.password = '';
+                this.f.creators = '';
+                this.f.verifier = '';
+                this.f.publisher = '';
+            }
+        },
         'f.progress'(v) {
             if (v !== 100) {
                 this.showNew = false;
@@ -100,9 +121,35 @@ export default {
     mounted() {
         setPhoneViewport(true);
         this.loadPending();
+        this.loadKnown();
     },
     unmounted() { setPhoneViewport(false); },
     methods: {
+        // Names and ids of every level already on the site, to detect repeats
+        async loadKnown() {
+            try {
+                const [main, unrated] = await Promise.all([
+                    fetchList('data'),
+                    fetchList('data/unrated'),
+                ]);
+                const out = [];
+                [[main, false], [unrated, true]].forEach(([list, isUnrated]) => {
+                    (list || []).forEach(([lvl], i) => {
+                        if (!lvl) return;
+                        out.push({
+                            id: String(lvl.id),
+                            key: norm(lvl.name),
+                            name: lvl.name,
+                            rank: i + 1,
+                            unrated: isUnrated,
+                        });
+                    });
+                });
+                this.known = out;
+            } catch {
+                this.known = [];
+            }
+        },
         async loadPending() {
             if (!this.configured) return;
             try {

@@ -133,17 +133,21 @@ export default {
         },
         levelJson(s) {
             const creators = (s.creators || '').split(/\s*[,;&\/]\s*|\s+y\s+/i).map((x) => x.trim()).filter(Boolean);
-            return JSON.stringify({
-                id: Number(s.level_id),
-                name: s.level_name,
-                author: s.publisher || '',
-                creators,
-                verifier: s.verifier || s.nickname,
-                verification: s.video,
-                percentToQualify: 0,
-                password: s.password || '',
-                records: [],
-            }, null, 4);
+            const q = JSON.stringify;
+            // Written by hand so "creators" stays on a single line
+            return [
+                '{',
+                `    "id": ${Number(s.level_id)},`,
+                `    "name": ${q(s.level_name)},`,
+                `    "author": ${q(s.publisher || '')},`,
+                `    "creators": [${creators.map((c) => q(c)).join(', ')}],`,
+                `    "verifier": ${q(s.verifier || s.nickname)},`,
+                `    "verification": ${q(s.video)},`,
+                `    "percentToQualify": 0,`,
+                `    "password": ${q(s.password || '')},`,
+                `    "records": []`,
+                '}',
+            ].join('\n');
         },
         async copy(text) {
             try {
