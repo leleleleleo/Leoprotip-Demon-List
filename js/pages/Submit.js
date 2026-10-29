@@ -44,7 +44,7 @@ export default {
                     <p v-if="existing" class="note ok">Este nivel ya está en {{ existing.unrated ? 'la lista Sin rate' : 'la lista' }} (#{{ existing.rank }}, {{ existing.name }}). Tu récord se agregará a ese nivel.</p>
                     <details :class="{ locked: !canNew }" :open="canNew && showNew">
                         <summary @click.prevent="toggleNew">Solo si es un nivel nuevo para la lista<span v-if="existing"> (este nivel ya está en la lista)</span><span v-else-if="!canNew"> (necesitas 100% de progreso)</span></summary>
-                        <label>Password <small>(si tiene)</small><input v-model.trim="f.password" maxlength="40"></label>
+                        <label>Password <small>(si no tiene, dejalo en blanco)</small><input v-model.trim="f.password" maxlength="40"></label>
                         <label>Creadores del nivel <small>(separados por coma)</small><input v-model.trim="f.creators" maxlength="200"></label>
                         <label>Verificador <small>(si eres el primero, pon tu nickname)</small><input v-model.trim="f.verifier" maxlength="60"></label>
                         <label>Publisher <small>(el que sale normal en GD)</small><input v-model.trim="f.publisher" maxlength="60"></label>
