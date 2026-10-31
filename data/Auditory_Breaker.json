@@ -7,5 +7,12 @@
     "verification": "https://youtu.be/iZSylfAkxx8",
     "percentToQualify": 0,
     "password": "",
-    "records": []
+    "records": [
+        {
+    "user": "Josignacio",
+    "link": "https://www.youtube.com/watch?v=iU6WuMX1lmc",
+    "percent": 100,
+    "hz": 180
+        }
+    ]
 }
