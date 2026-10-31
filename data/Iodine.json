@@ -7,5 +7,12 @@
     "verification": "https://www.youtube.com/watch?v=geG7-5K_tnw",
     "percentToQualify": 0,
     "password": "No se puede copiar",
-    "records": []
+    "records": [
+        {
+    "user": "Michel2023M",
+    "link": "https://m.youtube.com/watch?v=HZfCYsi0h9E",
+    "percent": 100,
+    "hz": 60
+        }
+    ]
 }
