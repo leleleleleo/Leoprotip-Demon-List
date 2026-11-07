@@ -46,7 +46,6 @@ export default {
                         <summary @click.prevent="toggleNew">Solo si es un nivel nuevo para la lista<span v-if="existing"> (este nivel ya está en la lista)</span><span v-else-if="!canNew"> (necesitas 100% de progreso)</span></summary>
                         <label>Password <small>(si no tiene, dejalo en blanco)</small><input v-model.trim="f.password" maxlength="40"></label>
                         <label>Creadores del nivel <small>(separados por coma)</small><input v-model.trim="f.creators" maxlength="200"></label>
-                        <label>Verificador <small>(si eres el primero, pon tu nickname)</small><input v-model.trim="f.verifier" maxlength="60"></label>
                         <label>Publisher <small>(el que sale normal en GD)</small><input v-model.trim="f.publisher" maxlength="60"></label>
                     </details>
                     <input v-model="trap" class="trap" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -184,6 +183,8 @@ export default {
                 if (v !== '' && v !== null) row[k] = v;
             }
             row.level_id = String(row.level_id);
+            // New level: the verifier is the player who sends it (their nickname)
+            if (this.showNew && this.canNew) row.verifier = f.nickname;
             this.busy = true;
             try {
                 await submitRecord(row);
